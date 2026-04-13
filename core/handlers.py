@@ -10,29 +10,33 @@ router = Router()
 
 @router.message(Command("start"))
 async def cmd_start(message: Message):
-    await message.answer("hi. send me a voice message and i will auto-detect the language and transcribe it.")
+    # welcome message
+    await message.answer("send voice or video note. i'll handle the rest.")
 
 
-@router.message(F.voice)
-async def handle_voice(message: Message, bot: Bot):
-    status_msg = await message.answer("processing your voice with ai...")
+@router.message(F.voice | F.video_note)
+async def handle_audio_content(message: Message, bot: Bot):
+    # initial status
+    status_msg = await message.answer("processing...")
 
-    voice_id = message.voice.file_id
-    file_info = await bot.get_file(voice_id)
-
-    ogg_path = f"temp/{voice_id}.ogg"
+    file_id = message.voice.file_id if message.voice else message.video_note.file_id
+    file_info = await bot.get_file(file_id)
+    ogg_path = f"temp/{file_id}.ogg"
 
     try:
+        # downloading file
         await bot.download_file(file_info.file_path, destination=ogg_path)
 
+        # running transcription in a separate thread
         transcribed_text = await asyncio.to_thread(transcribe_audio, ogg_path)
 
         await status_msg.edit_text(transcribed_text)
 
     except Exception as e:
-        error_text = f"an error occurred: {str(e)}".lower()
-        await status_msg.edit_text(error_text)
+        print(f"error: {e}")
+        await status_msg.edit_text("failed to process.")
 
     finally:
+        # cleanup
         if os.path.exists(ogg_path):
             os.remove(ogg_path)

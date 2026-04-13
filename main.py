@@ -7,12 +7,13 @@ from core.handlers import router
 async def main():
     bot = Bot(token=bot_token)
     dp = Dispatcher()
-
     dp.include_router(router)
 
-    print("bot is starting...")
+    # startup log
+    print("bot active.")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
+    # minimal logging
+    logging.basicConfig(level=logging.WARNING)
     asyncio.run(main())
