@@ -1,20 +1,26 @@
-from faster_whisper import WhisperModel
+import os
+from groq import Groq
+from core.config import groq_api_key
 
-model = WhisperModel("base", device="cpu", compute_type="int8")
+client = Groq(api_key=groq_api_key)
 
 
 def transcribe_audio(file_path: str) -> str:
     try:
-        segments, info = model.transcribe(file_path, beam_size=5)
+        with open(file_path, "rb") as file:
+            transcription = client.audio.transcriptions.create(
+                file=(file_path, file.read()),
+                model="whisper-large-v3-turbo",
+                response_format="verbose_json",
+            )
 
-        text = " ".join([segment.text for segment in segments])
-
-        result = f"[detected: {info.language}] {text.strip()}".lower()
+        text = transcription.text
+        lang = transcription.language
 
         if not text.strip():
-            return "could not hear any voice."
+            return "can't transcribe your voice :("
 
-        return result
+        return f"[detected: {lang}] {text.strip()}".lower()
 
     except Exception as e:
         return f"transcription error: {str(e)}".lower()
