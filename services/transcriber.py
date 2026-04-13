@@ -4,10 +4,10 @@ from core.config import groq_api_key
 
 client = Groq(api_key=groq_api_key)
 
-
 def transcribe_audio(file_path: str) -> str:
     try:
         with open(file_path, "rb") as file:
+            # whisper api call
             transcription = client.audio.transcriptions.create(
                 file=(file_path, file.read()),
                 model="whisper-large-v3-turbo",
@@ -18,9 +18,10 @@ def transcribe_audio(file_path: str) -> str:
         lang = transcription.language
 
         if not text.strip():
-            return "can't transcribe your voice :("
+            return "empty audio."
 
-        return f"[detected: {lang}] {text.strip()}".lower()
+        # returning formatted lowercase result
+        return f"[{lang}] {text.strip()}".lower()
 
     except Exception as e:
-        return f"transcription error: {str(e)}".lower()
+        return f"api error: {str(e)}".lower()
