@@ -18,8 +18,8 @@ A Telegram bot for voice and video message transcription and text processing, po
 **Link:** [@silentio_tg_bot](https://t.me/silentio_tg_bot)
 
 ## Core Models
-* **Whisper Large v3 Turbo** (OpenAI): Handles audio/video-to-text transcription and automatic language detection.
-* **Llama 3.1 8B Instant** (Meta): Processes the transcribed text for LLM-based generation tasks.
+* **Whisper Large v3** (OpenAI): Handles audio/video-to-text transcription and automatic language detection.
+* **Llama 3.3 70B** (Meta): Processes the transcribed text for LLM-based generation tasks.
 
 ## Functionality
 The bot accepts voice messages or video notes and provides the following processing modes:
