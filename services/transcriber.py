@@ -22,7 +22,7 @@ def transcribe_audio(file_path: str) -> str:
         with open(file_path, "rb") as file:
             transcription = client.audio.transcriptions.create(
                 file=(file_name, file.read()),
-                model="whisper-large-v3-turbo",
+                model="whisper-large-v3",
                 response_format="verbose_json",
             )
         
@@ -44,7 +44,7 @@ def process_text_task(text: str, task: str) -> str:
 
     try:
         completion = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": system_content},
                 {"role": "user", "content": text}
