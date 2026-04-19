@@ -15,7 +15,7 @@ pinned: false
 
 A Telegram bot for voice and video message transcription and text processing, powered by the Groq API.
 
-**Link:** [@silentio_tg_bot](https://t.me/silentio_tg_bot)
+**Link:** [@silentio_tg_bot](https://t.me/silentio_tg_bot) (Currently unavailable ^^)
 
 ## Core Models
 * **Whisper Large v3** (OpenAI): Handles audio/video-to-text transcription and automatic language detection.
